@@ -1,19 +1,24 @@
 export interface CardProps {
-  name: string;
+  title: string;
+  city: string;
+  checkInType: "self" | "host" | "other";
+  rescheduleType: "flexible" | "moderate" | "strict" | "other";
+  images: string;
+  price: number;
+  rating: number;
 }
 
 export interface ButtonProps {
   label: string;
-  onClick: () => void;
-}
-
-export interface LayoutProps {
-  children: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  variant?: "primary" | "secondary";
 }
 
 export interface PropertyProps {
-  id: string;
   name: string;
+  id: string;
   address: {
     state: string;
     city: string;
@@ -22,34 +27,36 @@ export interface PropertyProps {
   rating: number;
   category: string[];
   price: number;
-  description?: string;
   offers: {
     bed: string;
     shower: string;
     occupants: string;
   };
-  images: string[];
+  image: string;
   discount: string;
-  reviews: Review[];
 }
 
+export interface PillProps {
+  label: string;
+  onClick?: () => void;
+  className?: string;
+}
+
+export interface ReviewProps {
+  id: string;
+  userName: string;
+  userAvatar?: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
+
+export interface ReviewSectionProps {
+  propertyId: string;
+}
 export interface CategoryIconProps {
   icon: string;
   label: string;
   active?: boolean;
   onClick?: () => void;
-}
-
-export interface PillProps {
-  label: string;
-  onClick?: (label: string) => void;
-  active?: boolean;
-  className?: string;
-}
-
-export interface Review {
-  name: string;
-  avatar: string;
-  rating: number;
-  comment: string;
 }

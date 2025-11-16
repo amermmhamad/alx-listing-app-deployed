@@ -1,47 +1,32 @@
-import Card from "@/components/common/Card";
-import Pill from "@/components/common/Pill";
-import CategoryIcons from "@/components/layout/CategoryIcons";
-import { CATEGORYICONS, PROPERTYLISTINGSAMPLE } from "@/constants";
 import axios from "axios";
-import { Geist, Geist_Mono } from "next/font/google";
-import { useCallback, useEffect, useState } from "react";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const filterOptions = [
-  { label: "All" },
-  { label: "Top Villa" },
-  { label: "Free Reschedule" },
-  { label: "Book Now, Pay Later" },
-  { label: "Self CheckIn" },
-  { label: "Instant Book" },
-];
+import { useEffect, useState } from "react";
+import PropertyCard from "@/components/common/PropertyCard";
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState<string>("All");
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const filterList = useCallback(() => {
-    return PROPERTYLISTINGSAMPLE.filter((prop) => {
-      if (activeFilter === "All") {
-        return true;
-      } else prop.category.includes(activeFilter);
-    });
-  }, [activeFilter]);
+  type Property = {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    rating: number;
+    address: {
+      city: string;
+      country: string;
+    };
+    category?: string[];
+  };
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get("/api/properties");
+        setLoading(true);
+        setError(null);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/properties`
+        );
         setProperties(response.data);
       } catch (error) {
         console.error("Error fetching properties:", error);
@@ -54,58 +39,57 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600 text-lg">Loading properties...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <p className="text-red-600 text-xl font-semibold">{error}</p>
+          <button
+            onClick={() => globalThis.location.reload()}
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (properties.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-600 text-xl">No properties available.</p>
+      </div>
+    );
   }
 
   return (
-    <div className={`${geistSans.className} ${geistMono.className} `}>
-      <div className="max-sm:hidden sticky -top-10 max-w-[1500px] mx-auto flex items-center justify-between lg:px-0 overflow-x-auto gap-8 py-4 px-4">
-        {CATEGORYICONS.map((item, index) => (
-          <CategoryIcons
-            key={index}
-            icon={item.icon}
-            label={item.label}
-            active={index === 3}
-          />
-        ))}
-      </div>
-      <div className="max-w-[1500px] mx-auto px-0">
-        {/* Hero Banner */}
-        <div
-          style={{
-            backgroundImage: "url(/assets/image/hero-banner-image.jpg)",
-          }}
-          className="h-[min(calc(100vh-350px),550px)] w-full rounded-3xl bg-cover bg-center flex flex-col items-center justify-center text-white gap-4"
-        >
-          <h1 className="font-semibold max-w-[min(867px,80%)] xl:leading-28 text-3xl sm:text-4xl md:text-5xl xl:text-7xl text-center drop-shadow-2xl">
-            Find your favorite place here!
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto px-4">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Explore Properties
           </h1>
-          <p className="max-w-[min(700px,70%)] sm:text-lg md:text-xl lg:text-2xl text-center">
-            The best prices for over 2 million properties worldwide
+          <p className="text-gray-600">
+            Discover {properties.length} amazing properties worldwide
           </p>
         </div>
 
-        <div className="px-4">
-          <div className="flex items-center overflow-x-scroll mt-10 mb-6 gap-4 pb-3">
-            {filterOptions.map((option) => (
-              <Pill
-                key={option.label}
-                {...option}
-                active={activeFilter === option.label}
-                onClick={setActiveFilter}
-              />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-6">
-            {filterList().map((property, index) => {
-              return <Card {...property} key={index} />;
-            })}
-          </div>
-          {filterList().length === 0 && (
-            <p className="text-center text-gray-500 mt-10">
-              No properties found for &quot;{activeFilter}&quot;.
-            </p>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {properties.map((property) => (
+            <PropertyCard key={property.id} property={property} />
+          ))}
         </div>
       </div>
     </div>

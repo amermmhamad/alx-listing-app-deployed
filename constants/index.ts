@@ -1,22 +1,74 @@
-import type { PropertyProps } from "@/interfaces";
+import { PropertyProps } from "@/interfaces";
 
-export const PRESET_FILTERS = [
+export const APP_NAME = "ALX Listing App";
+
+export const API_URL = "https://api.example.com/properties";
+
+export const HERO_IMAGE = "/assets/Hero section image/Image 1.svg";
+
+// Main filters to display
+export const MAIN_FILTERS = [
   "Top Villa",
+  "Free Schedule",
+  "Book Now, Pay Later",
   "Self Checkin",
-  "Pet Friendly",
+  "Instant Book",
+];
+
+export const FILTERS = [
+  "Top Villa",
+  "Free Schedule",
+  "Booking Now, Pay Later",
+  "Self Checkin",
+  "Instant Book",
   "Free Parking",
-  "Free WiFi",
-  "Beachfront",
+  "Pool",
+  "Fireplace",
   "Mountain View",
+  "Desert View",
+  "Pet Friendly",
+  "City View",
+  "Free WiFi",
+  "24h Checkin",
+  "Riverside",
+  "Private Dock",
+  "Free Kayaks",
+  "Beachfront",
+  "Private Pool",
+  "Chef Service",
+  "Lakeside",
+  "Hiking Trails",
   "Garden",
   "City Center",
-] as const;
+  "Secluded",
+  "Hot Tub",
+  "Cliffside",
+  "Infinity Pool",
+  "Sea View",
+  "Historical",
+  "Free Breakfast",
+  "Public Transport",
+  "Safari",
+  "Guided Tours",
+  "Countryside",
+  "Riverfront",
+  "Private Garden",
+  "Ski Access",
+  "Ocean View",
+];
 
-export const HERO_BG = "/assets/imgs/hero/hero-bg.png";
+export const ACCOMMODATION_TYPES = [
+  "Rooms",
+  "Mansion",
+  "Countryside",
+  "Beach",
+  "Cabin",
+];
 
 export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
   {
     name: "Villa Ocean Breeze",
+    id: "1",
     address: {
       state: "Seminyak",
       city: "Bali",
@@ -30,11 +82,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "4-6",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 1.png",
     discount: "",
   },
   {
     name: "Mountain Escape Chalet",
+    id: "2",
     address: {
       state: "Aspen",
       city: "Colorado",
@@ -48,11 +101,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "2",
       occupants: "5-7",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 2.png",
     discount: "30",
   },
   {
     name: "Cozy Desert Retreat",
+    id: "3",
     address: {
       state: "Palm Springs",
       city: "California",
@@ -66,11 +120,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "1",
       occupants: "2-3",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 3.png",
     discount: "",
   },
   {
     name: "City Lights Penthouse",
+    id: "4",
     address: {
       state: "New York",
       city: "New York",
@@ -84,11 +139,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "2",
       occupants: "2-4",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 4.png",
     discount: "15",
   },
   {
     name: "Riverside Cabin",
+    id: "5",
     address: {
       state: "Queenstown",
       city: "Otago",
@@ -102,11 +158,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "2",
       occupants: "4-6",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 5.png",
     discount: "20",
   },
   {
     name: "Modern Beachfront Villa",
+    id: "6",
     address: {
       state: "Sidemen",
       city: "Bali",
@@ -120,11 +177,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "4",
       occupants: "8-10",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 6.png",
     discount: "",
   },
   {
     name: "Lakeside Chalet",
+    id: "7",
     address: {
       state: "Banff",
       city: "Alberta",
@@ -138,11 +196,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "4-5",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 7.png",
     discount: "10",
   },
   {
     name: "Tropical Garden Villa",
+    id: "8",
     address: {
       state: "Koh Samui",
       city: "Surat Thani",
@@ -156,11 +215,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "5-6",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 8.png",
     discount: "25",
   },
   {
     name: "Urban Loft",
+    id: "9",
     address: {
       state: "Berlin",
       city: "Berlin",
@@ -174,11 +234,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "1",
       occupants: "2-3",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 9.png",
     discount: "",
   },
   {
     name: "Secluded Forest Cabin",
+    id: "10",
     address: {
       state: "Whistler",
       city: "British Columbia",
@@ -192,11 +253,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "2",
       occupants: "5-7",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 10.png",
     discount: "40",
   },
   {
     name: "Cliffside Villa",
+    id: "11",
     address: {
       state: "Amalfi",
       city: "Salerno",
@@ -210,11 +272,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "4",
       occupants: "6-8",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 11.png",
     discount: "50",
   },
   {
     name: "Coastal Escape Villa",
+    id: "12",
     address: {
       state: "Noosa",
       city: "Queensland",
@@ -228,11 +291,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "4-6",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 12.png",
     discount: "",
   },
   {
     name: "Historical Villa",
+    id: "1",
     address: {
       state: "Florence",
       city: "Tuscany",
@@ -246,11 +310,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "2",
       occupants: "2-4",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 13.png",
     discount: "35",
   },
   {
     name: "Downtown Apartment",
+    id: "1",
     address: {
       state: "Tokyo",
       city: "Tokyo",
@@ -264,11 +329,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "1",
       occupants: "2",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 14.png",
     discount: "",
   },
   {
     name: "Luxury Safari Lodge",
+    id: "1",
     address: {
       state: "Serengeti",
       city: "Mara",
@@ -282,11 +348,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "4",
       occupants: "6-8",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 15.png",
     discount: "20",
   },
   {
     name: "Countryside Cottage",
+    id: "1",
     address: {
       state: "Cotswolds",
       city: "Gloucestershire",
@@ -300,11 +367,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "1",
       occupants: "2-4",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 16.png",
     discount: "25",
   },
   {
     name: "Riverfront Mansion",
+    id: "1",
     address: {
       state: "Paris",
       city: "Île-de-France",
@@ -318,11 +386,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "6-8",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 16.png",
     discount: "30",
   },
   {
     name: "Ski Chalet",
+    id: "1",
     address: {
       state: "Zermatt",
       city: "Valais",
@@ -336,11 +405,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "4-5",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 16.png",
     discount: "",
   },
   {
     name: "Island Paradise Villa",
+    id: "1",
     address: {
       state: "Mahe",
       city: "Victoria",
@@ -354,11 +424,12 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "5",
       occupants: "8-10",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 16.png",
     discount: "60",
   },
   {
     name: "Clifftop Retreat",
+    id: "1",
     address: {
       state: "Cape Town",
       city: "Western Cape",
@@ -372,7 +443,7 @@ export const PROPERTYLISTINGSAMPLE: PropertyProps[] = [
       shower: "3",
       occupants: "4-5",
     },
-    image: "/assets/imgs/detail/example-1.png",
+    image: "/assets/Listing images/List 16.png",
     discount: "",
   },
 ];

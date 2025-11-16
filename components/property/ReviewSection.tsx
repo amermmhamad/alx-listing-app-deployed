@@ -1,22 +1,23 @@
-import { Review } from "@/interfaces";
 import axios from "axios";
-import Image from "next/image";
 import { useState, useEffect } from "react";
-import { FaStar } from "react-icons/fa";
+import { ReviewProps, ReviewSectionProps } from "@/interfaces/index";
 
-const ReviewSection: React.FC<{ propertyId: string }> = ({ propertyId }) => {
-  const [reviews, setReviews] = useState<Review[]>([]);
+const ReviewSection = ({ propertyId }: ReviewSectionProps) => {
+  const [reviews, setReviews] = useState<ReviewProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
-          `/api/properties/${propertyId}/reviews`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/properties/${propertyId}/reviews`
         );
         setReviews(response.data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
+        setError("Failed to load reviews.");
       } finally {
         setLoading(false);
       }
@@ -25,38 +26,25 @@ const ReviewSection: React.FC<{ propertyId: string }> = ({ propertyId }) => {
     fetchReviews();
   }, [propertyId]);
 
-  if (loading) {
-    return <p>Loading reviews...</p>;
-  }
+  if (loading) return <p className="text-center py-4">Loading reviews...</p>;
+
+  if (error) return <p className="text-center text-red-600 py-4">{error}</p>;
+
+  if (reviews.length === 0)
+    return <p className="text-center text-gray-500 py-4">No reviews yet.</p>;
 
   return (
-    <div className="mt-8">
-      <h3 className="text-2xl font-semibold">Reviews</h3>
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-[470px_470px] gap-10">
-        {reviews.map((review, index) => (
-          <div key={index} className="pb-4 mb-4">
-            <div className="flex items-center">
-              <Image
-                src={review.avatar}
-                alt={review.name}
-                width={48}
-                height={48}
-                className="w-12 h-12 rounded-full mr-4"
-              />
-              <div>
-                <p className="font-bold">{review.name}</p>
-                <p className="text-yellow-500">
-                  {Array.from({ length: review.rating }, (_, i) => i).map(
-                    (star) => (
-                      <FaStar key={star} className="mr-1 inline mb-1.5" />
-                    )
-                  )}
-                </p>
-              </div>
+    <div className="bg-white rounded-lg shadow p-6">
+      <h2 className="text-2xl font-bold mb-4">Reviews ({reviews.length})</h2>
+      <div className="space-y-4">
+        {reviews.map((review) => (
+          <div key={review.id} className="border-b pb-4 last:border-b-0">
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-semibold">{review.userName}</p>
+              <span className="text-yellow-500">★ {review.rating}</span>
             </div>
-            <div className="mt-5">
-              <p className="max-w-[470px]">{review.comment}</p>
-            </div>
+            <p className="text-gray-700">{review.comment}</p>
+            <p className="text-sm text-gray-500 mt-1">{review.date}</p>
           </div>
         ))}
       </div>

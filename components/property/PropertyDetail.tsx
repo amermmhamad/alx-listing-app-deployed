@@ -1,120 +1,168 @@
-import { PropertyProps } from "@/interfaces/index";
-import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { FaRegHeart, FaShareAlt, FaStar } from "react-icons/fa";
-import { IoMdPin } from "react-icons/io";
-import ReviewSection from "@/components/property/ReviewSection";
-import BookingSection from "./BookingSection";
-import PropertyDescription from "./PropertyDescription";
 
-const PropertyDetail: React.FC<{ property: PropertyProps }> = ({
+export interface PropertyDetailProps {
+  property: {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    rating: number;
+    address: {
+      city: string;
+      country: string;
+      state?: string;
+      street?: string;
+    };
+    category?: string[];
+    description?: string;
+    amenities?: string[];
+    bedrooms?: number;
+    bathrooms?: number;
+    maxGuests?: number;
+    host?: {
+      name: string;
+      avatar?: string;
+      joinedDate?: string;
+    };
+  };
+}
+
+export default function PropertyDetail({
   property,
-}) => {
+}: Readonly<PropertyDetailProps>) {
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between">
-        <div>
-          <h1 className="text-4xl font-bold">{property.name}</h1>
-          <div className="flex items-center space-x-2 mt-2">
-            <span className="text-yellow-500">
-              <FaStar className="mr-1 inline mb-1.5" />
-              {property.rating} stars
-            </span>
-            <span>
-              {" "}
-              <IoMdPin className="inline mb-1" /> {property.address.city},{" "}
-              {property.address.country}
-            </span>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto px-4 max-w-6xl">
+        {/* Property Header */}
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+          <div className="relative h-96 w-full">
+            <Image
+              src={property.image}
+              alt={property.name}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          </div>
+
+          <div className="p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  {property.name}
+                </h1>
+                <p className="text-gray-600 text-lg">
+                  {property.address.street && `${property.address.street}, `}
+                  {property.address.city},{" "}
+                  {property.address.state && `${property.address.state}, `}
+                  {property.address.country}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-blue-600">
+                  ${property.price.toLocaleString()}
+                </p>
+                <p className="text-gray-600">per night</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-yellow-500 text-lg font-semibold">
+                {property.rating.toFixed(1)} ★
+              </span>
+              {property.bedrooms && (
+                <span className="text-gray-700">
+                  {property.bedrooms} Bedroom{property.bedrooms > 1 ? "s" : ""}
+                </span>
+              )}
+              {property.bathrooms && (
+                <span className="text-gray-700">
+                  {property.bathrooms} Bathroom
+                  {property.bathrooms > 1 ? "s" : ""}
+                </span>
+              )}
+              {property.maxGuests && (
+                <span className="text-gray-700">
+                  Up to {property.maxGuests} Guests
+                </span>
+              )}
+            </div>
+
+            {/* Category Tags */}
+            {property.category && property.category.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {property.category.map((cat) => (
+                  <span
+                    key={cat}
+                    className="px-3 py-1 bg-blue-50 text-blue-700 text-sm rounded-full font-medium"
+                  >
+                    {cat}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-        <div className="flex items-start space-x-4">
-          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-100 transition-all">
-            <FaRegHeart className="text-gray-600" />
-            <span className="text-gray-600">Save</span>
-          </button>
 
-          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-100 transition-all">
-            <FaShareAlt className="text-gray-600" />
-            <span className="text-gray-600">Share</span>
-          </button>
-        </div>
-      </div>
+        {/* Description Section */}
+        {property.description && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              About this property
+            </h2>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              {property.description}
+            </p>
+          </div>
+        )}
 
-      <div className="relative grid grid-cols-4 grid-rows-[350px_350px] gap-4 mt-4 rounded-[22px] overflow-hidden">
-        {property.images.slice(0, 4).map((img, index) => (
-          <Image
-            key={index}
-            src={img}
-            alt={property.name}
-            width={300}
-            height={350}
-            className={cn("w-full h-full object-cover ", {
-              "col-span-full row-span-full": property.images.length === 1,
-              "col-span-2 row-span-2":
-                (index === 0 && property.images.length > 1) ||
-                property.images.length === 2,
-              "col-span-2":
-                index === 1 || (index === 2 && property.images.length === 3),
-              "col-span-1": index > 1 && property.images.length > 3,
-            })}
-          />
-        ))}
-        <div>
-          <button
-            type="button"
-            className="absolute bottom-10 right-14 bg-white/20 text-white backdrop-blur-sm px-5 font-bold py-2 border-2 border-white rounded-full hover:bg-white-30 transition-all"
-          >
-            Show all photo
-          </button>
-        </div>
-      </div>
+        {/* Amenities Section */}
+        {property.amenities && property.amenities.length > 0 && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Amenities</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {property.amenities.map((amenity) => (
+                <div key={amenity} className="flex items-center gap-2">
+                  <span className="text-blue-600">✓</span>
+                  <span className="text-gray-700">{amenity}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-      <div className="flex items-center mt-6 gap-3">
-        <div className="flex items-center gap-1 border border-gray-300 rounded-full px-5 py-2">
-          <Image
-            src={"/assets/icon/bed.svg"}
-            alt="bed"
-            width={20}
-            height={20}
-            className=""
-          />{" "}
-          {property.offers.bed} <span className="text-gray-500">bedrooms</span>
-        </div>
-        <div className="flex items-center gap-1 border border-gray-300 rounded-full px-5 py-2">
-          <Image
-            src={"/assets/icon/shower.svg"}
-            alt="bed"
-            width={20}
-            height={20}
-            className=""
-          />{" "}
-          {property.offers.shower}{" "}
-          <span className="text-gray-500">bathrooms</span>
-        </div>
-        <div className="flex items-center gap-1 border border-gray-300 rounded-full px-5 py-2">
-          <Image
-            src={"/assets/icon/occupants.svg"}
-            alt="bed"
-            width={20}
-            height={20}
-            className=""
-          />{" "}
-          {property.offers.occupants}{" "}
-          <span className="text-gray-500">guests</span>
-        </div>
-      </div>
-
-      <div className="mt-8 flex items-start justify-between gap-8">
-        <div className="grow">
-          <div className="border border-[#E6E6E6] grow " />
-          <PropertyDescription property={property} />
-          <div className="mb-4 border border-[#E6E6E6] grow " />
-          <ReviewSection propertyId={property.id} />
-        </div>
-        <BookingSection price={property.price} />
+        {/* Host Information */}
+        {property.host && (
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Hosted by {property.host.name}
+            </h2>
+            <div className="flex items-center gap-4">
+              {property.host.avatar && (
+                <div className="relative w-16 h-16 rounded-full overflow-hidden">
+                  <Image
+                    src={property.host.avatar}
+                    alt={property.host.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              <div>
+                <p className="font-semibold text-gray-900">
+                  {property.host.name}
+                </p>
+                {property.host.joinedDate && (
+                  <p className="text-gray-600 text-sm">
+                    Joined {property.host.joinedDate}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
-};
-
-export default PropertyDetail;
+}
